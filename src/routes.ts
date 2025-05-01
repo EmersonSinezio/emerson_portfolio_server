@@ -4,7 +4,10 @@ import contactController from "./controllers/contactController";
 const router = Router();
 
 // Rotas GET
-router.get("/", contactController.read);
+router.get("/", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  contactController.read(req, res);
+});
 
 // Rotas POST
 router.post("/send", contactController.create);
