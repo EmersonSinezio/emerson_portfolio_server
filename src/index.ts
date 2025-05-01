@@ -1,3 +1,4 @@
+// index.ts
 import express from "express";
 import cors from "cors";
 import { connectDB } from "./config/dbConfig";
@@ -5,17 +6,15 @@ import routes from "./routes";
 
 const app = express();
 
-// Configurações básicas
 app.use(cors());
 app.use(express.json());
 
-// Conecta ao MongoDB antes de iniciar o servidor
+// Conecte ao MongoDB SEM iniciar o servidor tradicional
 connectDB().then(() => {
-  console.log("✅ Database connected");
+  console.log("✅ MongoDB conectado");
 });
 
-// Carrega as rotas
 app.use(routes);
 
-// Exportação no formato do Vercel (serverless)
+// Exportação para o Vercel
 export default app;
