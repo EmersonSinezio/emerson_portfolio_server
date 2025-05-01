@@ -6,9 +6,9 @@ export default {
     try {
       const data = await contactData.find();
       res.json(data); // Removed return
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: "Erro interno do servidor" });
+    } catch (er) {
+      console.log(er);
+      res.status(500).json({ error: "Erro interno do servidor" + er });
     }
   },
 
@@ -29,9 +29,9 @@ export default {
       });
 
       res.status(201).json(contactCreated); // Removed return
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: "Falha ao criar contato" });
+    } catch (er) {
+      console.log(er);
+      res.status(500).json({ error: "Falha ao criar contato" + er });
     }
   },
 };

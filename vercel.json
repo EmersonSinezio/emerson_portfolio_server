@@ -3,7 +3,10 @@
   "builds": [
     {
       "src": "api/[[...slug]].ts",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "include": ["src/**/*", "api/**/*", "package.json", "tsconfig.json"]
+      }
     }
   ],
   "routes": [

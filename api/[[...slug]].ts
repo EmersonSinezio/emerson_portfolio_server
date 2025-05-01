@@ -1,11 +1,16 @@
-import app from "../index";
 import { VercelRequest, VercelResponse } from "@vercel/node";
+import { Request, Response } from "express";
+import app from "../index";
 
-export default async (req: VercelRequest, res: VercelResponse) => {
-  // Remove headers problemáticos
-  delete req.headers.connection;
-  delete req.headers["accept-encoding"];
+export default async (vercelReq: VercelRequest, vercelRes: VercelResponse) => {
+  // Converter para tipos do Express
+  const expressReq = vercelReq as unknown as Request;
+  const expressRes = vercelRes as unknown as Response;
 
-  // Converte req/res do Vercel para o formato do Express
-  await app(req as any, res as any);
+  // Remover headers problemáticos
+  delete expressReq.headers.connection;
+  delete expressReq.headers["accept-encoding"];
+
+  // Executar o app Express
+  await app(expressReq, expressRes);
 };
