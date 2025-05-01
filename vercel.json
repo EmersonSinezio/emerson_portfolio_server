@@ -5,7 +5,8 @@
       "src": "src/index.ts",
       "use": "@vercel/node",
       "config": {
-        "include": ["src", "package.json", "tsconfig.json"]
+        "include": ["src/**", "package.json", "tsconfig.json"],
+        "maxLambdaSize": "50mb"
       }
     }
   ],
