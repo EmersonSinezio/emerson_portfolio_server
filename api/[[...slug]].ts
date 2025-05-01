@@ -1,4 +1,4 @@
-import app from "../src/index"; // Caminho corrigido
+import app from "../index"; // Caminho corrigido
 
 export default async (req: any, res: any) => {
   // Remova headers problemáticos
