@@ -5,24 +5,17 @@ import routes from "./routes";
 
 const app = express();
 
+// Configurações básicas
 app.use(cors());
 app.use(express.json());
+
+// Conecta ao MongoDB antes de iniciar o servidor
+connectDB().then(() => {
+  console.log("✅ Database connected");
+});
+
+// Carrega as rotas
 app.use(routes);
 
-// Configuração específica para a Vercel
-const startServer = async () => {
-  try {
-    await connectDB();
-    console.log("✅ Database connected");
-    const port = process.env.PORT || 3001;
-    app.listen(port, () => console.log(`🚀 Server running on port ${port}`));
-  } catch (error) {
-    console.log("🔴 Connection error:", error);
-    process.exit(1);
-  }
-};
-
-startServer();
-
-// Exportação necessária para a Vercel
+// Exportação no formato do Vercel (serverless)
 export default app;

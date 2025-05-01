@@ -3,15 +3,18 @@
   "builds": [
     {
       "src": "index.ts",
-      "use": "@vercel/node",
-      "config": {
-        "include": ["src/**/*.ts", "package.json", "tsconfig.json"]
-      }
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "/send",
+      "methods": ["POST"],
+      "dest": "index.ts"
+    },
+    {
+      "src": "/",
+      "methods": ["GET"],
       "dest": "index.ts"
     }
   ]
