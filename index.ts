@@ -12,12 +12,19 @@ app.use(express.json());
 // Middleware de conexão com tipagem completa
 app.use(async (req: Request, res: Response, next: NextFunction) => {
   try {
+    console.log("📡 Iniciando conexão...");
     await connectDB();
     next();
-  } catch (error) {
-    const err = error as Error;
-    console.error("❌ Erro de conexão:", err.message);
-    res.status(500).json({ error: "Erro de conexão com o banco de dados" });
+  } catch (err: unknown) {
+    console.error("💥 Erro durante a conexão:");
+    console.error(err);
+    res.status(500).json({
+      error: "Erro de conexão com o banco de dados",
+      details:
+        process.env.NODE_ENV === "development" && err instanceof Error
+          ? err.message
+          : undefined,
+    });
   }
 });
 

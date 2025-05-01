@@ -1,48 +1,41 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import dotenv from "dotenv";
 
 dotenv.config();
+console.log(process.env.MONGODB_URI);
 
-// Validação reforçada
 if (!process.env.MONGODB_URI) {
-  throw new Error("🔴 Erro: MONGODB_URI não definida no .env");
+  throw new Error("🔴 MONGODB_URI não definida no .env");
 }
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-// Configurações otimizadas para Serverless
 const mongooseOptions: mongoose.ConnectOptions = {
-  serverSelectionTimeoutMS: 5000,
-  socketTimeoutMS: 45000,
-  family: 4,
-  keepAlive: true,
-  heartbeatFrequencyMS: 10000,
+  serverSelectionTimeoutMS: 15000,
+  socketTimeoutMS: 30000,
+  ssl: true,
+  tlsAllowInvalidCertificates: false,
 } as mongoose.ConnectOptions;
 
-// Cache de conexão
 let cached = (global as any).mongoose;
-
-if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null };
-}
+if (!cached) cached = (global as any).mongoose = { conn: null, promise: null };
 
 const connectDB = async () => {
   if (cached.conn) return cached.conn;
 
-  if (!cached.promise) {
+  try {
     cached.promise = mongoose
       .connect(MONGODB_URI, mongooseOptions)
       .then((mongoose) => {
-        console.log(`✅ MongoDB conectado: ${mongoose.connection.host}`);
+        console.log(`✅ Conectado em: ${mongoose.connection.host}`);
         return mongoose;
       });
-  }
 
-  try {
     cached.conn = await cached.promise;
-  } catch (e) {
+  } catch (error) {
+    console.error("❌ Erro de conexão:", error);
     cached.promise = null;
-    throw e;
+    throw new Error("Falha na conexão com o MongoDB");
   }
 
   return cached.conn;
