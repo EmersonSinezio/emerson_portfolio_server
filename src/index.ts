@@ -22,10 +22,7 @@ const startServer = async () => {
   }
 };
 
-// Inicia o servidor apenas se não estiver em ambiente de deploy da Vercel
-if (process.env.NODE_ENV !== "production") {
-  startServer();
-}
+startServer();
 
 // Exportação necessária para a Vercel
 export default app;
